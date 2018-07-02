@@ -19,11 +19,11 @@ http.createServer(function (req, res) {
   	  new Promise((resolve, reject) => {
 	  	let routeResult = route.findRoute(reqUrl, req.method);
 
-	  	console.log(routeResult);
+	  	routeResult.method = req.method;
 
 		res.setHeader('Content-Type', 'application/json');
 		res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-		
+
 	  	if(!routeResult )  reject({error : "invalid route"});
 	  	else{
 	  		processAPI(routeResult, (result)=>{

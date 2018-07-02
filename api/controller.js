@@ -15,15 +15,18 @@ const switchHTTP = (method, params) => {
 
 
 module.exports.default = (routeFunction, callback) => {
+	
+	console.log("RouteFunction", routeFunction); 
+
 	let  params = {
 		first_name: "Sharina",
 		last_name : "Dev",
 		contact_number : "302132134"
 	};
-	routeFunction = "GET";
+
 	console.info("[INFO]", routeFunction);
-	
-	switchHTTP(routeFunction, params).then( i => {
+
+	switchHTTP(routeFunction.method, params).then( i => {
 		callback(i);
 	})
 

@@ -22,7 +22,7 @@ const getPerson = () => {
 		  'SELECT * FROM `'+ MAIN_TABLE +'`',
 		  [],
 		  (err, results) =>  {
-		    // console.log("RESULTS", results);
+		    connection.end();
 		    resolve(results);
 		  }
 		);
@@ -38,13 +38,17 @@ const postPerson = (params) => {
 	let last_name= params.last_name;
 	let contact_number= params.contact_number;
 
-	connection.query(
-	  "INSERT INTO person(first_name, last_name, contact_number) VALUES(?,?,?)",
-	  [ first_name, last_name, contact_number],
-	  (err, results) =>  {
-	    console.log("RESULTS", results);
-	  }
-	);
+	return new Promise((resolve, reject) => {
+		connection.query(
+			  "INSERT INTO person(first_name, last_name, contact_number) VALUES(?,?,?)",
+			  [ first_name, last_name, contact_number],
+			  (err, results) =>  {
+			   resolve(results);
+			   connection.end();
+			  }
+			);
+	});
+
 }
 
 const updatePerson = (id, params) => {
@@ -53,26 +57,34 @@ const updatePerson = (id, params) => {
 	let first_name= params.first_name;
 	let last_name= params.last_name;
 	let contact_number= params.contact_number;
-
-	connection.query(
+	return new Promise((resolve, reject) => {
+		connection.query(
 	  "UPDATE person SET first_name = ?, last_name = ? ,contact_number = ? where id = ?",
 	  [ first_name, last_name, contact_number, id],
 	  (err, results) =>  {
-	    console.log("RESULTS", results);
+	  	connection.end();
+	    resolve(results);
 	  }
 	);
+	});
+
 	
 }
 const delPerson = (id) => {
 	console.info("[INFO]", "Deleting a person");
 	init();
-	connection.query(
+	return new Promise((resolve, reject) => {
+		connection.query(
 	  "DELETE from person  where id = ?",
 	  [ id],
 	  (err, results) =>  {
-	    console.log("RESULTS", results);
+	  	connection.end();
+	     resolve(results);
+
 	  }
 	);
+	});
+
 	
 }
 module.exports = {
