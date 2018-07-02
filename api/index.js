@@ -12,6 +12,7 @@ http.createServer(function (req, res) {
   let reqUrl = url.parse(req.url, true).href;
 
   console.info("[URL]", reqUrl);
+   console.info("[URL]", req.param);
 
   if(reqUrl == "/favicon.ico") {
   	res.end();
